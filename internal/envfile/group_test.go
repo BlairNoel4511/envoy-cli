@@ -65,6 +65,14 @@ func TestGroupStore_List(t *testing.T) {
 	}
 }
 
+func TestGroupStore_ListEmpty(t *testing.T) {
+	gs := NewGroupStore()
+	names := gs.List()
+	if len(names) != 0 {
+		t.Errorf("expected empty list, got %v", names)
+	}
+}
+
 func TestFilterByGroup_ReturnsMatchingEntries(t *testing.T) {
 	gs := NewGroupStore()
 	gs.Add("db", []string{"DB_HOST", "DB_PASS"})
