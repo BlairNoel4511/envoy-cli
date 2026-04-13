@@ -19,6 +19,11 @@ type CloneResult struct {
 	Errors  []string
 }
 
+// hasPrefix reports whether key starts with prefix.
+func hasPrefix(key, prefix string) bool {
+	return len(key) >= len(prefix) && key[:len(prefix)] == prefix
+}
+
 // Clone copies entries from src into dst according to the given options.
 // It returns a CloneResult summarising what happened.
 func Clone(src, dst []Entry, opts CloneOptions) ([]Entry, CloneResult) {
@@ -30,10 +35,7 @@ func Clone(src, dst []Entry, opts CloneOptions) ([]Entry, CloneResult) {
 	copy(out, dst)
 
 	for _, e := range src {
-		if opts.Prefix != "" && len(e.Key) < len(opts.Prefix) {
-			continue
-		}
-		if opts.Prefix != "" && e.Key[:len(opts.Prefix)] != opts.Prefix {
+		if opts.Prefix != "" && !hasPrefix(e.Key, opts.Prefix) {
 			continue
 		}
 
