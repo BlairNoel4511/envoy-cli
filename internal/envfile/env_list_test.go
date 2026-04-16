@@ -30,6 +30,13 @@ func TestList_FilterByPrefix(t *testing.T) {
 	}
 }
 
+func TestList_FilterByPrefix_NoMatch(t *testing.T) {
+	results := List(makeListEntries(), ListOptions{FilterPrefix: "NONEXISTENT_"})
+	if len(results) != 0 {
+		t.Fatalf("expected no results for unmatched prefix, got %+v", results)
+	}
+}
+
 func TestList_RedactsSensitiveKeys(t *testing.T) {
 	results := List(makeListEntries(), ListOptions{RedactSecrets: true})
 	for _, r := range results {
