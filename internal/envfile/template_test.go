@@ -58,6 +58,17 @@ func TestExpandTemplate_DeduplicatesMissing(t *testing.T) {
 	}
 }
 
+func TestExpandTemplate_EmptyTemplate(t *testing.T) {
+	entries := makeTemplateEntries()
+	r := ExpandTemplate("", entries)
+	if r.Expanded != "" {
+		t.Errorf("expected empty string, got %q", r.Expanded)
+	}
+	if len(r.Resolved) != 0 || len(r.Missing) != 0 {
+		t.Error("expected empty resolved and missing for empty template")
+	}
+}
+
 func TestExpandEntries_ExpandsValues(t *testing.T) {
 	entries := makeTemplateEntries()
 	expanded, missing := ExpandEntries(entries)
