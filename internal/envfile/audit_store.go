@@ -49,3 +49,17 @@ func AppendAuditEntry(path string, action AuditAction, key, profile string, sens
 	log.Record(action, key, profile, sensitive, note)
 	return SaveAuditLog(path, log)
 }
+
+// PruneAuditLog removes entries beyond the given maximum count, keeping the
+// most recent entries, and saves the updated log back to disk.
+func PruneAuditLog(path string, maxEntries int) error {
+	log, err := LoadAuditLog(path)
+	if err != nil {
+		return err
+	}
+	if len(log.Entries) <= maxEntries {
+		return nil
+	}
+	log.Entries = log.Entries[len(log.Entries)-maxEntries:]
+	return SaveAuditLog(path, log)
+}
