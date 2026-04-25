@@ -20,6 +20,17 @@ func FormatSetResults(results []SetResult, colorize bool) string {
 	return strings.TrimRight(sb.String(), "\n")
 }
 
+// SummarizeSetResults returns a short summary string of how many keys were
+// added, updated, skipped, and unchanged from the given results.
+func SummarizeSetResults(results []SetResult) string {
+	counts := make(map[string]int)
+	for _, r := range results {
+		counts[r.Action]++
+	}
+	return fmt.Sprintf("added=%d updated=%d skipped=%d unchanged=%d",
+		counts["added"], counts["updated"], counts["skipped"], counts["unchanged"])
+}
+
 func formatSetLine(r SetResult, colorize bool) string {
 	masked := maskIfSensitive(r.Key, r.Value)
 	switch r.Action {
