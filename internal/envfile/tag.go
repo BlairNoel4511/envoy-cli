@@ -84,3 +84,8 @@ func (ts *TagStore) All() []Tag {
 	}
 	return out
 }
+
+// RemoveKey deletes all labels associated with the given env key.
+func (ts *TagStore) RemoveKey(key string) {
+	delete(ts.tags, key)
+}
