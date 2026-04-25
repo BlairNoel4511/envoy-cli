@@ -92,3 +92,15 @@ func TestFlatten_PreservesOriginalValueInOutput(t *testing.T) {
 		t.Errorf("expected masked value in result, got %s", results[0].Value)
 	}
 }
+
+func TestFlatten_SummaryTotalMatchesInputLength(t *testing.T) {
+	entries := makeFlattenEntries()
+	_, _, summary := Flatten(entries, FlattenOptions{})
+	if summary.Total != len(entries) {
+		t.Errorf("expected summary.Total %d to match input length %d", summary.Total, len(entries))
+	}
+	if summary.Changed+summary.Skipped != summary.Total {
+		t.Errorf("expected Changed (%d) + Skipped (%d) to equal Total (%d)",
+			summary.Changed, summary.Skipped, summary.Total)
+	}
+}
